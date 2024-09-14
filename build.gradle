@@ -18,7 +18,7 @@ def projectName = 'libgdx-library-template'
 
 //Change this to whatever Maven Central group you might publish to,
 //which is probably not this one if you aren't Tommy Ettinger.
-group 'com.github.dgzt.gdx.lwjgl3.angle.vulkan'
+group 'com.github.dgzt.gdx.lwjgl3'
 
 version "$VERSION_NAME" // You can set the version in gradle.properties .
 

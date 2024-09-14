@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-package com.github.dgzt.gdx.lwjgl3.angle.vulkan;
+package com.github.dgzt.gdx.lwjgl3;
 
 
 import java.io.File;

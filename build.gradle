@@ -18,7 +18,7 @@ def projectName = 'libgdx-library-template'
 
 //Change this to whatever Maven Central group you might publish to,
 //which is probably not this one if you aren't Tommy Ettinger.
-group 'com.github.tommyettinger'
+group 'com.github.dgzt.gdx.lwjgl3.angle.vulkan'
 
 version "$VERSION_NAME" // You can set the version in gradle.properties .
 
@@ -109,7 +109,7 @@ dependencies {
 // Libraries that don't use libGDX directly can change the next line
 // from `api` to `testImplementation` .
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
-    testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     testImplementation "junit:junit:4.13.2"
 }

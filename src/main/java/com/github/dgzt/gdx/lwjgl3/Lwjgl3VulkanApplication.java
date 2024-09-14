@@ -142,7 +142,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
     }
 
     public Lwjgl3VulkanApplication (ApplicationListener listener, Lwjgl3ApplicationConfiguration config) {
-        if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) loadANGLE();
+        if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32) loadANGLE();
         initializeGlfw();
         setApplicationLogger(new Lwjgl3ApplicationLogger());
 
@@ -168,7 +168,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
         this.sync = new Sync();
 
         Lwjgl3Window window = createWindow(config, listener, 0);
-        if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) postLoadANGLE();
+        if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32) postLoadANGLE();
         windows.add(window);
         try {
             loop();
@@ -507,11 +507,11 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
                 GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
             }
         } else {
-            if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
+            if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32) {
                 GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_CREATION_API, GLFW.GLFW_EGL_CONTEXT_API);
                 GLFW.glfwWindowHint(GLFW.GLFW_CLIENT_API, GLFW.GLFW_OPENGL_ES_API);
-                GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 2);
-                GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 0);
+                GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 3);
+                GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 2);
             }
         }
 
@@ -566,7 +566,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
         }
         GLFW.glfwMakeContextCurrent(windowHandle);
         GLFW.glfwSwapInterval(config.vSyncEnabled ? 1 : 0);
-        if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
+        if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32) {
             try {
                 Class gles = Class.forName("org.lwjgl.opengles.GLES");
                 gles.getMethod("createCapabilities").invoke(gles);
@@ -579,12 +579,12 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
             GL.createCapabilities();
         }
 
-        initiateGL(config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20);
+        initiateGL(config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32);
         if (!glVersion.isVersionEqualToOrHigher(2, 0))
             throw new GdxRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
                     + GL11.glGetString(GL11.GL_VERSION) + "\n" + glVersion.getDebugVersionString());
 
-        if (config.glEmulation != Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20 && !supportsFBO()) {
+        if (config.glEmulation != Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32 && !supportsFBO()) {
             throw new GdxRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
                     + GL11.glGetString(GL11.GL_VERSION) + ", FBO extension: false\n" + glVersion.getDebugVersionString());
         }

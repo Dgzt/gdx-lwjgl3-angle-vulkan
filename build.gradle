@@ -110,6 +110,17 @@ dependencies {
 // from `api` to `testImplementation` .
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
     api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+
+    api "org.lwjgl:lwjgl-opengles:$lwjgl3Version"
+    api "org.lwjgl:lwjgl-opengles:$lwjgl3Version:natives-linux"
+    api "org.lwjgl:lwjgl-opengles:$lwjgl3Version:natives-linux-arm32"
+    api "org.lwjgl:lwjgl-opengles:$lwjgl3Version:natives-linux-arm64"
+    api "org.lwjgl:lwjgl-opengles:$lwjgl3Version:natives-macos"
+    api "org.lwjgl:lwjgl-opengles:$lwjgl3Version:natives-macos-arm64"
+    api "org.lwjgl:lwjgl-opengles:$lwjgl3Version:natives-windows"
+    api "org.lwjgl:lwjgl-opengles:$lwjgl3Version:natives-windows-x86"
+    api "org.lwjgl:lwjgl-egl:$lwjgl3Version"
+
     testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     testImplementation "junit:junit:4.13.2"
 }

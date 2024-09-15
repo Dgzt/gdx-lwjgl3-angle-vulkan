@@ -116,12 +116,12 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
             this.gl20 = this.gl30 = new Lwjgl3GL30();
         } else {
             try {
-                this.gl20 = window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL20 ? new Lwjgl3GL20()
-                        : (GL20)Class.forName("com.badlogic.gdx.backends.lwjgl3.angle.Lwjgl3GLES20").newInstance();
+                this.gl20 = this.gl30 = this.gl31 = this.gl32 = window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL20 ? new Lwjgl3GL32()
+                        : (GL32)Class.forName("com.github.dgzt.gdx.lwjgl3.angle.Lwjgl3GLES32").newInstance();
             } catch (Throwable t) {
                 throw new GdxRuntimeException("Couldn't instantiate GLES20.", t);
             }
-            this.gl30 = null;
+//            this.gl30 = null;
         }
         updateFramebufferInfo();
         initiateGL();

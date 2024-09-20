@@ -101,7 +101,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
 
     static void loadANGLE () {
         try {
-            Class angleLoader = Class.forName("ccom.github.dgzt.gdx.lwjgl3.angle;.ANGLELoader");
+            Class angleLoader = Class.forName("com.github.dgzt.gdx.lwjgl3.angle.ANGLELoader");
             Method load = angleLoader.getMethod("load");
             load.invoke(angleLoader);
         } catch (ClassNotFoundException t) {
@@ -113,7 +113,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
 
     static void postLoadANGLE () {
         try {
-            Class angleLoader = Class.forName("com.github.dgzt.gdx.lwjgl3.angle;.ANGLELoader");
+            Class angleLoader = Class.forName("com.github.dgzt.gdx.lwjgl3.angle.ANGLELoader");
             Method load = angleLoader.getMethod("postGlfwInit");
             load.invoke(angleLoader);
         } catch (ClassNotFoundException t) {

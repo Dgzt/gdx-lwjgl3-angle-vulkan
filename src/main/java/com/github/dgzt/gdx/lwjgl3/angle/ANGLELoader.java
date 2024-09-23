@@ -37,6 +37,7 @@ public class ANGLELoader {
     static private final Random random = new Random();
     static private File egl;
     static private File gles;
+    static private File vulkan;
     static private File lastWorkingDir;
 
     public static void closeQuietly (Closeable c) {
@@ -189,16 +190,21 @@ public class ANGLELoader {
 
         String eglSource = osDir + "/libEGL" + ext;
         String glesSource = osDir + "/libGLESv2" + ext;
+        String vulkanSource = osDir + "/vulkan-1" + ext;
         String crc = crc(ANGLELoader.class.getResourceAsStream("/" + eglSource))
-                + crc(ANGLELoader.class.getResourceAsStream("/" + glesSource));
+                + crc(ANGLELoader.class.getResourceAsStream("/" + glesSource))
+                + crc(ANGLELoader.class.getResourceAsStream("/" + vulkanSource));
         egl = getExtractedFile(crc, new File(eglSource).getName());
         gles = getExtractedFile(crc, new File(glesSource).getName());
+        vulkan = getExtractedFile(crc, new File(vulkanSource).getName());
 
         if (!isMac) {
             extractFile(eglSource, egl);
             System.load(egl.getAbsolutePath());
             extractFile(glesSource, gles);
             System.load(gles.getAbsolutePath());
+            extractFile(vulkanSource, vulkan);
+            System.load(vulkan.getAbsolutePath());
         } else {
             // On macOS, we can't preload the shared libraries. calling dlopen("path1/lib.dylib")
             // then calling dlopen("lib.dylib") will not return the dylib loaded in the first dlopen()
@@ -210,11 +216,13 @@ public class ANGLELoader {
             lastWorkingDir = new File(".");
             extractFile(eglSource, new File(lastWorkingDir, egl.getName()));
             extractFile(glesSource, new File(lastWorkingDir, gles.getName()));
+            extractFile(glesSource, new File(lastWorkingDir, vulkan.getName()));
         }
     }
 
     public static void postGlfwInit () {
         new File(lastWorkingDir, egl.getName()).delete();
         new File(lastWorkingDir, gles.getName()).delete();
+        new File(lastWorkingDir, vulkan.getName()).delete();
     }
 }

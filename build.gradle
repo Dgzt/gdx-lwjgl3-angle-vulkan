@@ -10,6 +10,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "de.undercouch.download" version "5.0.1"
+}
+
 apply plugin: 'java-library'
 apply plugin: 'com.vanniktech.maven.publish'
 
@@ -124,3 +128,34 @@ dependencies {
     testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     testImplementation "junit:junit:4.13.2"
 }
+
+tasks.register('setupExternalNativesDirs') {
+    doLast {
+        file("build").mkdir();
+        file("src/main/resources/windows64").mkdirs();
+    }
+    doNotTrackState("Don't track state")
+}
+
+tasks.register('fetchAngleNativesZIP', Download) {
+    dependsOn setupExternalNativesDirs
+    src 'https://github.com/Dgzt/angle-vulkan-natives/releases/download/v6727/angle-windows-x64.zip'
+    dest 'build/angle-windows-x64.zip'
+    onlyIfModified true
+    useETag "all"
+}
+
+tasks.register('fetchExternalNatives', Copy) {
+    dependsOn fetchAngleNativesZIP
+    from zipTree("build/angle-windows-x64.zip")
+    include "dist/libEGL.dll"
+    include "dist/libGLESv2.dll"
+    include "dist/vulkan-1.dll"
+    eachFile { fcp ->
+        fcp.path = fcp.path.replaceFirst("dist/", '')
+    }
+
+    into "src/main/resources/windows64"
+    doNotTrackState("Don't track state")
+}
+

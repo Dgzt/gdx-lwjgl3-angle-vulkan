@@ -32,7 +32,7 @@ public class Lwjgl3Launcher {
        ...
        config.setOpenGLEmulation(Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32, 0, 0);  
        new Lwjgl3VulkanApplication(new YourMainClass(), config);
-	  }
+       }
 }
 ```
 

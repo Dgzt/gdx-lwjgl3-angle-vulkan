@@ -15,8 +15,11 @@ A Google [Angle](https://github.com/google/angle) based LWJGL3 backend for libGD
 
 ## Usage:
 
-Add dependency to you project:
-TODO
+Add dependency to your lwjgl3 project:
+
+```groovy
+api 'com.github.Dgzt:gdx-lwjgl3-angle-vulkan:main-SNAPSHOT'
+```
 
 Use `Lwjgl3VulkanApplication` application in your LWJGL3 launcher class:
 

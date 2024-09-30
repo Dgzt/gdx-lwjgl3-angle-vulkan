@@ -190,7 +190,7 @@ public class ANGLELoader {
 
         String eglSource = osDir + "/libEGL" + ext;
         String glesSource = osDir + "/libGLESv2" + ext;
-        String vulkanSource = osDir + "/vulkan-1" + ext;
+        String vulkanSource = osDir + "/" + (isWindows ? "vulkan-1" : "libvulkan") + ext + (isLinux ? ".1" : "");
         String crc = crc(ANGLELoader.class.getResourceAsStream("/" + eglSource))
                 + crc(ANGLELoader.class.getResourceAsStream("/" + glesSource))
                 + crc(ANGLELoader.class.getResourceAsStream("/" + vulkanSource));

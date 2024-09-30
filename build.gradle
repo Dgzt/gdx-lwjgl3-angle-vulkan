@@ -173,6 +173,7 @@ tasks.register('extractLinux64Natives', Copy) {
     from zipTree("build/angle-linux-x64.zip")
     include "dist/libEGL.so"
     include "dist/libGLESv2.so"
+    include "dist/libvulkan.so.1"
     eachFile { fcp ->
         fcp.path = fcp.path.replaceFirst("dist/", '')
     }

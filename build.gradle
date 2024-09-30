@@ -133,11 +133,12 @@ tasks.register('setupExternalNativesDirs') {
     doLast {
         file("build").mkdir();
         file("src/main/resources/windows64").mkdirs();
+        file("src/main/resources/linux64").mkdirs();
     }
     doNotTrackState("Don't track state")
 }
 
-tasks.register('fetchAngleNativesZIP', Download) {
+tasks.register('fetchAngleWindows64NativesZIP', Download) {
     dependsOn setupExternalNativesDirs
     src 'https://github.com/Dgzt/angle-vulkan-natives/releases/download/v6727/angle-windows-x64.zip'
     dest 'build/angle-windows-x64.zip'
@@ -145,8 +146,16 @@ tasks.register('fetchAngleNativesZIP', Download) {
     useETag "all"
 }
 
-tasks.register('fetchExternalNatives', Copy) {
-    dependsOn fetchAngleNativesZIP
+tasks.register('fetchAngleWLinux64NativesZIP', Download) {
+    dependsOn setupExternalNativesDirs
+    src 'https://github.com/Dgzt/angle-vulkan-natives/releases/download/v6727/angle-linux-x64.zip'
+    dest 'build/angle-linux-x64.zip'
+    onlyIfModified true
+    useETag "all"
+}
+
+tasks.register('extractWindows64Natives', Copy) {
+    dependsOn fetchAngleWindows64NativesZIP
     from zipTree("build/angle-windows-x64.zip")
     include "dist/libEGL.dll"
     include "dist/libGLESv2.dll"
@@ -159,3 +168,20 @@ tasks.register('fetchExternalNatives', Copy) {
     doNotTrackState("Don't track state")
 }
 
+tasks.register('extractLinux64Natives', Copy) {
+    dependsOn fetchAngleWLinux64NativesZIP
+    from zipTree("build/angle-linux-x64.zip")
+    include "dist/libEGL.so"
+    include "dist/libGLESv2.so"
+    eachFile { fcp ->
+        fcp.path = fcp.path.replaceFirst("dist/", '')
+    }
+
+    into "src/main/resources/linux64"
+    doNotTrackState("Don't track state")
+}
+
+tasks.register('fetchExternalNatives', Copy) {
+    dependsOn extractWindows64Natives
+    dependsOn extractLinux64Natives
+}

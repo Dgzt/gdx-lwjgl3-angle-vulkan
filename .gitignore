@@ -144,4 +144,5 @@ Thumbs.db
 *.*#
 *#*#
 
-src/main/resources/
+src/main/resources/windows64
+src/main/resources/linux64

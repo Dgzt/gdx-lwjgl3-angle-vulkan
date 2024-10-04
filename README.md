@@ -5,11 +5,11 @@ A Google [Angle](https://github.com/google/angle) based LWJGL3 backend for libGD
 
 ## Supported operating systems:
 
-|Operating system | Supported?|
-|-----------------|-----------|
-| Windows (x64)   | Yes       |
-| Linux (x64)     | Not yet   |
-| Mac OS X (x64)  | No[^1]    |
+|Operating system | Supported?                                                            |
+|-----------------|-----------------------------------------------------------------------|
+| Windows (x64)   | Yes                                                                   |
+| Linux (x64)     | [In progress](https://github.com/Dgzt/gdx-lwjgl3-angle-vulkan/pull/1) |
+| Mac OS X (x64)  | No[^1]                                                                |
 
 [^1]: Google Angle doesn't support Vulkan on MacOS. [source](https://github.com/google/angle?tab=readme-ov-file#platform-support-via-backing-renderers)
 

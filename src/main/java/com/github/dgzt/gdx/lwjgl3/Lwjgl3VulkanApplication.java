@@ -33,6 +33,7 @@ import com.badlogic.gdx.backends.lwjgl3.audio.Lwjgl3Audio;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
 
+import com.github.dgzt.gdx.lwjgl3.angle.ANGLELoader;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.AMDDebugOutput;
@@ -101,11 +102,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
 
     static void loadANGLE () {
         try {
-            Class angleLoader = Class.forName("com.github.dgzt.gdx.lwjgl3.angle.ANGLELoader");
-            Method load = angleLoader.getMethod("load");
-            load.invoke(angleLoader);
-        } catch (ClassNotFoundException t) {
-            return;
+            ANGLELoader.load();
         } catch (Throwable t) {
             throw new GdxRuntimeException("Couldn't load ANGLE.", t);
         }
@@ -113,11 +110,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
 
     static void postLoadANGLE () {
         try {
-            Class angleLoader = Class.forName("com.github.dgzt.gdx.lwjgl3.angle.ANGLELoader");
-            Method load = angleLoader.getMethod("postGlfwInit");
-            load.invoke(angleLoader);
-        } catch (ClassNotFoundException t) {
-            return;
+            ANGLELoader.postGlfwInit();
         } catch (Throwable t) {
             throw new GdxRuntimeException("Couldn't load ANGLE.", t);
         }

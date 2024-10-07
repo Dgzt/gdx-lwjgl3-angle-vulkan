@@ -17,6 +17,10 @@
 package com.github.dgzt.gdx.lwjgl3.angle;
 
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import org.lwjgl.egl.EGL;
+import org.lwjgl.glfw.GLFWNativeEGL;
+import org.lwjgl.opengles.GLES;
+import org.lwjgl.system.Configuration;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -25,6 +29,9 @@ import java.util.UUID;
 import java.util.zip.CRC32;
 
 public class ANGLELoader {
+    private static final String EGL_LIB_NAME = "EGL";
+    private static final String GLES_LIB_NAME = "GLESv2";
+
     static public boolean isWindows = System.getProperty("os.name").contains("Windows");
     static public boolean isLinux = System.getProperty("os.name").contains("Linux")
             || System.getProperty("os.name").contains("FreeBSD");
@@ -188,8 +195,8 @@ public class ANGLELoader {
             ext = ".dylib";
         }
 
-        String eglSource = osDir + "/libEGL" + ext;
-        String glesSource = osDir + "/libGLESv2" + ext;
+        String eglSource = osDir + "/lib" + EGL_LIB_NAME + ext;
+        String glesSource = osDir + "/lib" + GLES_LIB_NAME + ext;
         String vulkanSource = osDir + "/" + (isWindows ? "vulkan-1" : "libvulkan") + ext + (isLinux ? ".1" : "");
         String crc = crc(ANGLELoader.class.getResourceAsStream("/" + eglSource))
                 + crc(ANGLELoader.class.getResourceAsStream("/" + glesSource))
@@ -200,11 +207,8 @@ public class ANGLELoader {
 
         if (!isMac) {
             extractFile(eglSource, egl);
-            System.load(egl.getAbsolutePath());
             extractFile(glesSource, gles);
-            System.load(gles.getAbsolutePath());
             extractFile(vulkanSource, vulkan);
-            System.load(vulkan.getAbsolutePath());
         } else {
             // On macOS, we can't preload the shared libraries. calling dlopen("path1/lib.dylib")
             // then calling dlopen("lib.dylib") will not return the dylib loaded in the first dlopen()
@@ -218,6 +222,16 @@ public class ANGLELoader {
             extractFile(glesSource, new File(lastWorkingDir, gles.getName()));
             extractFile(glesSource, new File(lastWorkingDir, vulkan.getName()));
         }
+
+        if (Configuration.EGL_LIBRARY_NAME.get() == null) {
+            Configuration.EGL_LIBRARY_NAME.set(egl.getAbsolutePath());
+        }
+        if (Configuration.OPENGLES_LIBRARY_NAME.get() == null) {
+            Configuration.OPENGLES_LIBRARY_NAME.set(gles.getAbsolutePath());
+        }
+
+        GLFWNativeEGL.setEGLPath(EGL.getFunctionProvider());
+        GLFWNativeEGL.setGLESPath(GLES.getFunctionProvider());
     }
 
     public static void postGlfwInit () {

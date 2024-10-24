@@ -35,9 +35,6 @@ public class ANGLELoader {
     static public boolean isWindows = System.getProperty("os.name").contains("Windows");
     static public boolean isLinux = System.getProperty("os.name").contains("Linux")
             || System.getProperty("os.name").contains("FreeBSD");
-    static public boolean isMac = System.getProperty("os.name").contains("Mac");
-    static public boolean isARM = System.getProperty("os.arch").startsWith("arm")
-            || System.getProperty("os.arch").startsWith("aarch64");
     static public boolean is64Bit = System.getProperty("os.arch").contains("64")
             || System.getProperty("os.arch").startsWith("armv8");
 
@@ -178,21 +175,17 @@ public class ANGLELoader {
     }
 
     public static void load () {
-        if ((isARM && !isMac) || (!isWindows && !isLinux && !isMac))
-            throw new GdxRuntimeException("ANGLE is only supported on x86/x86_64 Windows, x64 Linux, and x64/arm64 macOS.");
+        if (!is64Bit || (!isWindows && !isLinux))
+            throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
         String osDir = null;
         String ext = null;
         if (isWindows) {
-            osDir = is64Bit ? "windows64" : "windows32";
+            osDir = "windows64";
             ext = ".dll";
         }
         if (isLinux) {
             osDir = "linux64";
             ext = ".so";
-        }
-        if (isMac) {
-            osDir = isARM ? "macosxarm64" : "macosx64";
-            ext = ".dylib";
         }
 
         String eglSource = osDir + "/lib" + EGL_LIB_NAME + ext;
@@ -205,23 +198,9 @@ public class ANGLELoader {
         gles = getExtractedFile(crc, new File(glesSource).getName());
         vulkan = getExtractedFile(crc, new File(vulkanSource).getName());
 
-        if (!isMac) {
-            extractFile(eglSource, egl);
-            extractFile(glesSource, gles);
-            extractFile(vulkanSource, vulkan);
-        } else {
-            // On macOS, we can't preload the shared libraries. calling dlopen("path1/lib.dylib")
-            // then calling dlopen("lib.dylib") will not return the dylib loaded in the first dlopen()
-            // call, but instead perform the dlopen library search algorithm anew. Since the dylibs
-            // we extract are not in any paths dlopen knows about, GLFW fails to load them.
-            // Instead, we need to copy the shared libraries to the current working directory (which
-            // we can't temporarily change in pure Java either...). The dylibs will get deleted
-            // in postGlfwInit() once the first window has been created, and GLFW has loaded the dylibs.
-            lastWorkingDir = new File(".");
-            extractFile(eglSource, new File(lastWorkingDir, egl.getName()));
-            extractFile(glesSource, new File(lastWorkingDir, gles.getName()));
-            extractFile(glesSource, new File(lastWorkingDir, vulkan.getName()));
-        }
+        extractFile(eglSource, egl);
+        extractFile(glesSource, gles);
+        extractFile(vulkanSource, vulkan);
 
         if (Configuration.EGL_LIBRARY_NAME.get() == null) {
             Configuration.EGL_LIBRARY_NAME.set(egl.getAbsolutePath());

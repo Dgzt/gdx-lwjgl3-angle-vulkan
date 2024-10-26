@@ -21,6 +21,7 @@ import java.util.Arrays;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Graphics.DisplayMode;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics.Lwjgl3DisplayMode;
 import com.badlogic.gdx.graphics.Color;
 
 public class Lwjgl3WindowConfiguration {
@@ -37,7 +38,7 @@ public class Lwjgl3WindowConfiguration {
     FileType windowIconFileType;
     String[] windowIconPaths;
     Lwjgl3WindowListener windowListener;
-    Lwjgl3Graphics.Lwjgl3DisplayMode fullscreenMode;
+    Lwjgl3DisplayMode fullscreenMode;
     String title;
     Color initialBackgroundColor = Color.BLACK;
     boolean initialVisible = true;
@@ -146,7 +147,7 @@ public class Lwjgl3WindowConfiguration {
     /** Sets the app to use fullscreen mode. Use the static methods like {@link Lwjgl3ApplicationConfiguration#getDisplayMode()} on
      * this class to enumerate connected monitors and their fullscreen display modes. */
     public void setFullscreenMode (DisplayMode mode) {
-        this.fullscreenMode = (Lwjgl3Graphics.Lwjgl3DisplayMode)mode;
+        this.fullscreenMode = (Lwjgl3DisplayMode)mode;
     }
 
     /** Sets the window title. If null, the application listener's class name is used. */

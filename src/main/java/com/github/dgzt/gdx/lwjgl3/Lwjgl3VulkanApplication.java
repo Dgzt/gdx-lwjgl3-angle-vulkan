@@ -84,11 +84,11 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
 
     static void initializeGlfw () {
         if (errorCallback == null) {
-            if (SharedLibraryLoader.os == Os.MacOsX) loadGlfwAwtMacos();
             Lwjgl3NativesLoader.load();
             errorCallback = GLFWErrorCallback.createPrint(Lwjgl3ApplicationConfiguration.errorStream);
             GLFW.glfwSetErrorCallback(errorCallback);
-            if (SharedLibraryLoader.os == Os.MacOsX) GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL);
+            if (SharedLibraryLoader.os == Os.MacOsX)
+                GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL);
             GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);
             if (!GLFW.glfwInit()) {
                 throw new GdxRuntimeException("Unable to initialize GLFW");
@@ -109,20 +109,6 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
             ANGLELoader.postGlfwInit();
         } catch (Throwable t) {
             throw new GdxRuntimeException("Couldn't load ANGLE.", t);
-        }
-    }
-
-    static void loadGlfwAwtMacos () {
-        try {
-            Class loader = Class.forName("com.badlogic.gdx.backends.lwjgl3.awt.GlfwAWTLoader");
-            Method load = loader.getMethod("load");
-            File sharedLib = (File)load.invoke(loader);
-            Configuration.GLFW_LIBRARY_NAME.set(sharedLib.getAbsolutePath());
-            Configuration.GLFW_CHECK_THREAD0.set(false);
-        } catch (ClassNotFoundException t) {
-            return;
-        } catch (Throwable t) {
-            throw new GdxRuntimeException("Couldn't load GLFW AWT for macOS.", t);
         }
     }
 

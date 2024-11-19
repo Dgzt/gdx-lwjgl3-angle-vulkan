@@ -199,18 +199,11 @@ public class ANGLELoader {
         vulkan = getExtractedFile(crc, new File(vulkanSource).getName());
 
         extractFile(eglSource, egl);
+        System.load(egl.getAbsolutePath());
         extractFile(glesSource, gles);
+        System.load(gles.getAbsolutePath());
         extractFile(vulkanSource, vulkan);
-
-        if (Configuration.EGL_LIBRARY_NAME.get() == null) {
-            Configuration.EGL_LIBRARY_NAME.set(egl.getAbsolutePath());
-        }
-        if (Configuration.OPENGLES_LIBRARY_NAME.get() == null) {
-            Configuration.OPENGLES_LIBRARY_NAME.set(gles.getAbsolutePath());
-        }
-
-        GLFWNativeEGL.setEGLPath(EGL.getFunctionProvider());
-        GLFWNativeEGL.setGLESPath(GLES.getFunctionProvider());
+        System.load(vulkan.getAbsolutePath());
     }
 
     public static void postGlfwInit () {

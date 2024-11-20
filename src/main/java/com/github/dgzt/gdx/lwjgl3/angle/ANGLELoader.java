@@ -175,8 +175,11 @@ public class ANGLELoader {
     }
 
     public static void load () {
-        if (!is64Bit || (!isWindows && !isLinux))
-            throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
+        // TODO fix Linux support
+//        if (!is64Bit || (!isWindows && !isLinux))
+//            throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
+        if (!is64Bit || !isWindows)
+            throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows.");
         String osDir = null;
         String ext = null;
         if (isWindows) {

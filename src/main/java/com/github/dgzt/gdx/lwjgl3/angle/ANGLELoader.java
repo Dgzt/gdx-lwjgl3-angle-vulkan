@@ -176,10 +176,8 @@ public class ANGLELoader {
 
     public static void load () {
         // TODO fix Linux support
-//        if (!is64Bit || (!isWindows && !isLinux))
-//            throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
-        if (!is64Bit || !isWindows)
-            throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows.");
+        if (!is64Bit || (!isWindows && !isLinux))
+            throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
         String osDir = null;
         String ext = null;
         if (isWindows) {
@@ -202,11 +200,18 @@ public class ANGLELoader {
         vulkan = getExtractedFile(crc, new File(vulkanSource).getName());
 
         extractFile(eglSource, egl);
-        System.load(egl.getAbsolutePath());
         extractFile(glesSource, gles);
-        System.load(gles.getAbsolutePath());
         extractFile(vulkanSource, vulkan);
-        System.load(vulkan.getAbsolutePath());
+
+        if (Configuration.EGL_LIBRARY_NAME.get() == null) {
+            Configuration.EGL_LIBRARY_NAME.set(egl.getAbsolutePath());
+        }
+        if (Configuration.OPENGLES_LIBRARY_NAME.get() == null) {
+            Configuration.OPENGLES_LIBRARY_NAME.set(gles.getAbsolutePath());
+        }
+
+        GLFWNativeEGL.setEGLPath(EGL.getFunctionProvider());
+        GLFWNativeEGL.setGLESPath(GLES.getFunctionProvider());
     }
 
     public static void postGlfwInit () {

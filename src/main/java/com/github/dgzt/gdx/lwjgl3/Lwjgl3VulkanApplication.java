@@ -513,8 +513,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
             windowHandle = GLFW.glfwCreateWindow(config.fullscreenMode.width, config.fullscreenMode.height, config.title,
                     config.fullscreenMode.getMonitor(), sharedContextWindow);
 
-            // Fix from https://github.com/libgdx/libgdx/pull/7069
-            // On Ubuntu >= 22.04 with Nvidia GPU drivers and X11 display server there's a bug with EGL Context API
+            // On Ubuntu >= 22.04 with Nvidia GPU drivers and X11 sdisplay server there's a bug with EGL Context API
             // If the windows creation has failed for this reason try to create it again with the native context
             if (windowHandle == 0 && config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32) {
                 GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_CREATION_API, GLFW.GLFW_NATIVE_CONTEXT_API);
@@ -525,7 +524,6 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
             GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, config.windowDecorated ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
             windowHandle = GLFW.glfwCreateWindow(config.windowWidth, config.windowHeight, config.title, 0, sharedContextWindow);
 
-            // Fix from https://github.com/libgdx/libgdx/pull/7069
             // On Ubuntu >= 22.04 with Nvidia GPU drivers and X11 display server there's a bug with EGL Context API
             // If the windows creation has failed for this reason try to create it again with the native context
             if (windowHandle == 0 && config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32) {

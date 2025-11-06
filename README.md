@@ -21,7 +21,7 @@ Add dependency to your lwjgl3 project:
 implementation "org.lwjgl:lwjgl-opengles:3.3.3:natives-windows"
 implementation "org.lwjgl:lwjgl-opengles:3.3.3:natives-linux"
 
-api 'com.github.Dgzt:gdx-lwjgl3-angle-vulkan:1.3.0'
+api 'com.github.Dgzt:gdx-lwjgl3-angle-vulkan:1.4.0'
 ```
 
 Use `Lwjgl3VulkanApplication` application in your LWJGL3 launcher class:
@@ -45,6 +45,7 @@ public class Lwjgl3Launcher {
 
 | libGDX | gdx-lwjgl3-angle-vulkan | LWJGL OpenGL ES |
 |--------|-------------------------|-----------------|
+| 1.14.0 | 1.4.0                   | 3.3.3           |
 | 1.13.5 | 1.3.0                   | 3.3.3           |
 | 1.13.1 | 1.2.0                   | 3.3.3           |
 | 1.13.0 | 1.1.0                   | 3.3.4           |

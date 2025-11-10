@@ -87,8 +87,14 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
             Lwjgl3NativesLoader.load();
             errorCallback = GLFWErrorCallback.createPrint(Lwjgl3ApplicationConfiguration.errorStream);
             GLFW.glfwSetErrorCallback(errorCallback);
-            if (SharedLibraryLoader.os == Os.MacOsX)
-                GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL);
+            switch (ANGLELoader.angleBackend) {
+                case DIRECT3D_9: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_D3D9); break;
+                case DIRECT3D_11: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_D3D11); break;
+                case DESKTOP_GL: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_OPENGL); break;
+                case GL_ES: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_OPENGLES); break;
+                case VULKAN: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_VULKAN); break;
+                case METAL: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL); break;
+            }
             GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);
             if (!GLFW.glfwInit()) {
                 throw new GdxRuntimeException("Unable to initialize GLFW");
@@ -96,9 +102,9 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
         }
     }
 
-    static void loadANGLE () {
+    static void loadANGLE (Lwjgl3ApplicationConfiguration.AngleBackend angleBackend) {
         try {
-            ANGLELoader.load();
+            ANGLELoader.load(angleBackend);
         } catch (Throwable t) {
             throw new GdxRuntimeException("Couldn't load ANGLE.", t);
         }
@@ -117,7 +123,7 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
     }
 
     public Lwjgl3VulkanApplication (ApplicationListener listener, Lwjgl3ApplicationConfiguration config) {
-        if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32) loadANGLE();
+        if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES32) loadANGLE(config.angleBackend);
         initializeGlfw();
         setApplicationLogger(new Lwjgl3ApplicationLogger());
 

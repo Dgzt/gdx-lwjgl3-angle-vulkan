@@ -167,19 +167,25 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 	}
 
     public void setAngleBackend(AngleBackend angleBackend) {
-        if (SharedLibraryLoader.os == Os.Windows) {
-            if (AngleBackend.METAL == angleBackend) {
-                throw new GdxRuntimeException("Metal is not supported on Windows!");
+        if (angleBackend != null) {
+            if (SharedLibraryLoader.os == Os.Windows) {
+                if (AngleBackend.METAL == angleBackend) {
+                    throw new GdxRuntimeException("Metal is not supported on Windows!");
+                }
+            } else if (SharedLibraryLoader.os == Os.Linux) {
+                switch (angleBackend) {
+                    case DIRECT3D_9:
+                        throw new GdxRuntimeException("Direct3D9 is not supported on Linux!");
+                    case DIRECT3D_11:
+                        throw new GdxRuntimeException("Direct3D11 is not supported on Linux!");
+                    case GL_ES:
+                        throw new GdxRuntimeException("GL ES is not supported on Linux!");
+                    case METAL:
+                        throw new GdxRuntimeException("Metal is not supported on Linux!");
+                }
+            } else {
+                throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
             }
-        } else if (SharedLibraryLoader.os == Os.Linux) {
-            switch (angleBackend) {
-                case DIRECT3D_9: throw new GdxRuntimeException("Direct3D9 is not supported on Linux!");
-                case DIRECT3D_11: throw new GdxRuntimeException("Direct3D11 is not supported on Linux!");
-                case GL_ES: throw new GdxRuntimeException("GL ES is not supported on Linux!");
-                case METAL: throw new GdxRuntimeException("Metal is not supported on Linux!");
-            }
-        } else {
-            throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
         }
 
         this.angleBackend = angleBackend;

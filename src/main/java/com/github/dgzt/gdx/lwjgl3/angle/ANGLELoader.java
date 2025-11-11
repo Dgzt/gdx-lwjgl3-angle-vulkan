@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.github.dgzt.gdx.lwjgl3.Lwjgl3ApplicationConfiguration;
 import org.lwjgl.egl.EGL;
 import org.lwjgl.glfw.GLFWNativeEGL;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengles.GLES;
 import org.lwjgl.system.Configuration;
 
@@ -212,6 +213,9 @@ public class ANGLELoader {
         if (Configuration.OPENGLES_LIBRARY_NAME.get() == null) {
             Configuration.OPENGLES_LIBRARY_NAME.set(gles.getAbsolutePath());
         }
+
+        Configuration.OPENGLES_EXPLICIT_INIT.set(true);
+        GLES.create(GL.getFunctionProvider());
 
         GLFWNativeEGL.setEGLPath(EGL.getFunctionProvider());
         GLFWNativeEGL.setGLESPath(GLES.getFunctionProvider());

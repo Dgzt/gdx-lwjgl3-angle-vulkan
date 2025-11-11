@@ -89,12 +89,30 @@ public class Lwjgl3VulkanApplication implements Lwjgl3ApplicationBase {
             GLFW.glfwSetErrorCallback(errorCallback);
             if (ANGLELoader.angleBackend != null) {
                 switch (ANGLELoader.angleBackend) {
-                    case DIRECT3D_9: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_D3D9); break;
-                    case DIRECT3D_11: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_D3D11); break;
-                    case DESKTOP_GL: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_OPENGL); break;
-                    case GL_ES: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_OPENGLES); break;
-                    case VULKAN: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_VULKAN); break;
-                    case METAL: GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL); break;
+                    case DIRECT3D_9:
+                        System.out.println("Set angle backend to DIRECT3D_9");
+                        GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_D3D9);
+                        break;
+                    case DIRECT3D_11:
+                        System.out.println("Set angle backend to DIRECT3D_11");
+                        GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_D3D11);
+                        break;
+                    case DESKTOP_GL:
+                        System.out.println("Set angle backend to DESKTOP_GL");
+                        GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_OPENGL);
+                        break;
+                    case GL_ES:
+                        System.out.println("Set angle backend to GL_ES");
+                        GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_OPENGLES);
+                        break;
+                    case VULKAN:
+                        System.out.println("Set angle backend to VULKAN");
+                        GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_VULKAN);
+                        break;
+                    case METAL:
+                        System.out.println("Set angle backend to METAL");
+                        GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL);
+                        break;
                 }
             }
             GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);

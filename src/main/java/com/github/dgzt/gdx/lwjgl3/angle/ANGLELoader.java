@@ -215,7 +215,7 @@ public class ANGLELoader {
         }
 
         Configuration.OPENGLES_EXPLICIT_INIT.set(true);
-        GLES.create(GL.getFunctionProvider());
+        //GLES.create(GL.getFunctionProvider());
 
         GLFWNativeEGL.setEGLPath(EGL.getFunctionProvider());
         GLFWNativeEGL.setGLESPath(GLES.getFunctionProvider());

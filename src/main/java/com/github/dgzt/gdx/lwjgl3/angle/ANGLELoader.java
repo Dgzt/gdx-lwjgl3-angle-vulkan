@@ -17,8 +17,10 @@
 package com.github.dgzt.gdx.lwjgl3.angle;
 
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.github.dgzt.gdx.lwjgl3.Lwjgl3ApplicationConfiguration;
 import org.lwjgl.egl.EGL;
 import org.lwjgl.glfw.GLFWNativeEGL;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengles.GLES;
 import org.lwjgl.system.Configuration;
 
@@ -38,6 +40,7 @@ public class ANGLELoader {
     static public boolean is64Bit = System.getProperty("os.arch").contains("64")
             || System.getProperty("os.arch").startsWith("armv8");
 
+    static public Lwjgl3ApplicationConfiguration.AngleBackend angleBackend = null;
     static private final Random random = new Random();
     static private File egl;
     static private File gles;
@@ -174,7 +177,9 @@ public class ANGLELoader {
         return false;
     }
 
-    public static void load () {
+    public static void load (Lwjgl3ApplicationConfiguration.AngleBackend angleBackend) {
+        ANGLELoader.angleBackend = angleBackend;
+
         if (!is64Bit || (!isWindows && !isLinux))
             throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
         String osDir = null;
@@ -208,6 +213,9 @@ public class ANGLELoader {
         if (Configuration.OPENGLES_LIBRARY_NAME.get() == null) {
             Configuration.OPENGLES_LIBRARY_NAME.set(gles.getAbsolutePath());
         }
+
+        //Configuration.OPENGLES_EXPLICIT_INIT.set(true);
+        //GLES.create(GL.getFunctionProvider());
 
         GLFWNativeEGL.setEGLPath(EGL.getFunctionProvider());
         GLFWNativeEGL.setGLESPath(GLES.getFunctionProvider());

@@ -1,4 +1,8 @@
-[1.5.0] ~
+[1.6.0] ~
+
+[1.5.0] ~ 06/12/2026
+- Update to libGDX 1.14.2
+- Update Google Angle to v7871
 
 [1.4.0] ~ 11/06/2025
 - Update to libGDX 1.14.0

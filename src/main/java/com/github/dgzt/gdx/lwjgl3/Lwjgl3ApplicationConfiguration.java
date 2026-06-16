@@ -21,6 +21,7 @@ import java.nio.IntBuffer;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.LifecycleListener;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Os;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 import org.lwjgl.BufferUtils;
@@ -37,7 +38,6 @@ import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Graphics.Monitor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics.Lwjgl3Monitor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
@@ -59,7 +59,12 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
         ANGLE_GLES32, GL20, GL30, GL31, GL32
 	}
 
+    public enum AngleBackend {
+        DIRECT3D_9, DIRECT3D_11, DESKTOP_GL, GL_ES, VULKAN, METAL
+    }
+
 	GLEmulation glEmulation = GLEmulation.GL20;
+    AngleBackend angleBackend = AngleBackend.VULKAN;
 	int gles30ContextMajorVersion = 3;
 	int gles30ContextMinorVersion = 2;
 
@@ -95,6 +100,7 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		audioDeviceBufferSize = config.audioDeviceBufferSize;
 		audioDeviceBufferCount = config.audioDeviceBufferCount;
 		glEmulation = config.glEmulation;
+        angleBackend = config.angleBackend;
 		gles30ContextMajorVersion = config.gles30ContextMajorVersion;
 		gles30ContextMinorVersion = config.gles30ContextMinorVersion;
 		r = config.r;
@@ -158,6 +164,31 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		this.gles30ContextMajorVersion = gles3MajorVersion;
 		this.gles30ContextMinorVersion = gles3MinorVersion;
 	}
+
+    public void setAngleBackend(AngleBackend angleBackend) {
+        if (angleBackend != null) {
+            if (SharedLibraryLoader.os == Os.Windows) {
+                if (AngleBackend.METAL == angleBackend) {
+                    throw new GdxRuntimeException("Metal is not supported on Windows!");
+                }
+            } else if (SharedLibraryLoader.os == Os.Linux) {
+                switch (angleBackend) {
+                    case DIRECT3D_9:
+                        throw new GdxRuntimeException("Direct3D9 is not supported on Linux!");
+                    case DIRECT3D_11:
+                        throw new GdxRuntimeException("Direct3D11 is not supported on Linux!");
+                    case GL_ES:
+                        throw new GdxRuntimeException("GL ES is not supported on Linux!");
+                    case METAL:
+                        throw new GdxRuntimeException("Metal is not supported on Linux!");
+                }
+            } else {
+                throw new GdxRuntimeException("ANGLE Vulkan is only supported on x86_64 Windows and x64 Linux.");
+            }
+        }
+
+        this.angleBackend = angleBackend;
+    }
 
 	/** Sets the bit depth of the color, depth and stencil buffer as well as multi-sampling.
 	 *

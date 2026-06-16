@@ -135,7 +135,7 @@ tasks.register('setupExternalNativesDirs') {
 
 tasks.register('fetchAngleWindows64NativesZIP', Download) {
     dependsOn setupExternalNativesDirs
-    src "https://github.com/Dgzt/angle-vulkan-natives/releases/download/$angleVersion/angle-windows-x64.zip"
+    src "https://github.com/Dgzt/angle-natives/releases/download/$angleVersion/angle-windows-x64.zip"
     dest 'build/angle-windows-x64.zip'
     onlyIfModified true
     useETag "all"
@@ -143,7 +143,7 @@ tasks.register('fetchAngleWindows64NativesZIP', Download) {
 
 tasks.register('fetchAngleWLinux64NativesZIP', Download) {
     dependsOn setupExternalNativesDirs
-    src "https://github.com/Dgzt/angle-vulkan-natives/releases/download/$angleVersion/angle-linux-x64.zip"
+    src "https://github.com/Dgzt/angle-natives/releases/download/$angleVersion/angle-linux-x64.zip"
     dest 'build/angle-linux-x64.zip'
     onlyIfModified true
     useETag "all"
